@@ -1,4 +1,4 @@
-import STORIES from "../data/stories";
+import STORIES from "../data/stories/index";
 
 const LENGTH_TARGETS = { short: 150, medium: 280, long: 450 };
 

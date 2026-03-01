@@ -151,6 +151,9 @@ export default function useTypingSession() {
 
     if (e.key.length !== 1) return;
 
+    // Prevent browser defaults for printable keys (e.g. Space scrolling the page)
+    e.preventDefault();
+
     // Start timer on first real keypress
     if (!startedRef.current) {
       setStarted(true);

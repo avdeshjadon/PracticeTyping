@@ -13,7 +13,9 @@ export const kbRowStyle = { display: "flex", gap: 4 };
 
 export const keyBaseStyle = {
   background: TOKENS.surface,
-  border: `1px solid ${TOKENS.border}`,
+  borderWidth: 1,
+  borderStyle: "solid",
+  borderColor: TOKENS.border,
   borderRadius: 5,
   color: TOKENS.dim,
   fontFamily: TOKENS.fontMono,

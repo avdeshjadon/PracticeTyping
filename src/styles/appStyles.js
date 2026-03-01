@@ -35,7 +35,9 @@ export const navStyle = { display: "flex", gap: 4, flex: 1, flexWrap: "wrap" };
 
 export const navBtnStyle = {
   background: "none",
-  border: `1px solid ${TOKENS.muted}`,
+  borderWidth: 1,
+  borderStyle: "solid",
+  borderColor: TOKENS.muted,
   color: TOKENS.dimLight,
   fontFamily: "inherit",
   fontSize: 11,
@@ -58,7 +60,9 @@ export const lengthGroupStyle = { display: "flex", gap: 2 };
 
 export const lengthBtnStyle = {
   background: "none",
-  border: `1px solid ${TOKENS.borderLight}`,
+  borderWidth: 1,
+  borderStyle: "solid",
+  borderColor: TOKENS.borderLight,
   color: TOKENS.dimMid,
   fontFamily: "inherit",
   fontSize: 10,
@@ -143,18 +147,21 @@ export const textAreaStyle = {
   fontSize: 20,
   lineHeight: 2.2,
   letterSpacing: "0.04em",
-  maxHeight: 260,
-  overflowY: "hidden",
+  maxHeight: 280,
+  overflowY: "auto",
+  overflowX: "hidden",
   textAlign: "left",
   width: "100%",
   wordBreak: "break-all",
   position: "relative",
+  scrollBehavior: "smooth",
 };
 
 export const charStyle = {
   color: "#2d2d2d",
   display: "inline",
-  transition: "color 0.08s ease",
+  transition: "color 0.12s ease",
+  position: "relative",
 };
 
 export const charCorrectStyle = { color: TOKENS.green };
@@ -166,11 +173,6 @@ export const charWrongStyle = {
 };
 
 export const charReviewStyle = { color: TOKENS.yellow };
-
-export const charCursorStyle = {
-  color: TOKENS.text,
-  borderBottom: `2px solid ${TOKENS.text}`,
-};
 
 // ─── Footer ─────────────────────────────────────────────────────────────────
 export const footerStyle = { padding: "8px 32px 12px", textAlign: "center" };

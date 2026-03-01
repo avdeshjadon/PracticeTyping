@@ -15,7 +15,10 @@ import {
 export default function Header({ mode, length, soundOn, onSwitchMode, onSwitchLength, onToggleSound }) {
   return (
     <header style={headerStyle}>
-      <div style={logoStyle}>keyzen</div>
+      <div style={logoStyle}>
+        <img src="/favicon.svg" alt="" style={{ width: 22, height: 22, marginRight: 6, verticalAlign: 'middle' }} />
+        LearnTyping
+      </div>
       <nav style={navStyle}>
         {MODES.map((m) => (
           <button

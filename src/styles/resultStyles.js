@@ -50,7 +50,9 @@ export const resultActionsStyle = { display: "flex", gap: 12 };
 
 export const resultBtnStyle = {
   background: "none",
-  border: `1px solid ${TOKENS.green}`,
+  borderWidth: 1,
+  borderStyle: "solid",
+  borderColor: TOKENS.green,
   color: TOKENS.green,
   fontFamily: TOKENS.fontMono,
   fontSize: 12,
