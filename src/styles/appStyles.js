@@ -49,9 +49,9 @@ export const navBtnStyle = {
 };
 
 export const navBtnActiveStyle = {
-  borderColor: TOKENS.green,
-  color: TOKENS.green,
-  background: "rgba(74,222,128,0.05)",
+  borderColor: TOKENS.dimLight,
+  color: "#ccc",
+  background: "rgba(255,255,255,0.04)",
 };
 
 export const controlsStyle = { display: "flex", alignItems: "center", gap: 12 };
@@ -158,7 +158,7 @@ export const textAreaStyle = {
 };
 
 export const charStyle = {
-  color: "#2d2d2d",
+  color: "#3e3e3e",
   display: "inline",
   transition: "color 0.12s ease",
   position: "relative",
