@@ -1,9 +1,62 @@
+// ----------------------------------------------------------------------------
+// LearnTyping -- Browser-Based Typing Practice & Training Application
+// ----------------------------------------------------------------------------
+// Author   : Avdesh Jadon
+// GitHub   : https://github.com/avdeshjadon
+// License  : MIT License -- free to use, modify, and distribute.
+//            See LICENSE file in the project root for full license text.
+// ----------------------------------------------------------------------------
+// If this project helped you, consider starring the repository, opening a
+// pull request, or reporting issues on GitHub. Contributions are welcome.
+// ----------------------------------------------------------------------------
+//
+// GlobalStyles.jsx -- Injected Global CSS
+// =========================================
+// Renders a <style> tag with all global CSS that cannot be expressed as
+// inline React styles: @font-face imports, @keyframes animations, pseudo-
+// element rules, scrollbar hiding, zen-mode show/hide transitions,
+// responsive media queries, and GPU compositing hints.
+//
+// Animation philosophy: every visual transition uses a spring-like
+// cubic-bezier(0.22, 1, 0.36, 1) easing for an organic, bouncy feel.
+// GPU-composited properties (transform, opacity) are preferred over
+// layout-triggering ones (width, height, top, left) for jank-free 60fps.
+// ----------------------------------------------------------------------------
+
 export default function GlobalStyles() {
   return (
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
       * { box-sizing: border-box; margin: 0; padding: 0; }
-      body { background: #0a0a0a; }
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      body {
+        background: #333437;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        overflow-x: hidden;
+      }
+
+      /* ── GPU layer promotion for all animated elements ── */
+      .app-header,
+      .app-footer,
+      .kb-wrap,
+      .smooth-cursor,
+      .kb-key,
+      .live-stats,
+      .start-hint,
+      .typing-main {
+        will-change: transform, opacity;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-perspective: 1000px;
+        perspective: 1000;
+        transform: translateZ(0);
+      }
 
       /* ── Smooth vertical caret (MonkeyType style) ──────── */
       .smooth-cursor {
@@ -13,26 +66,205 @@ export default function GlobalStyles() {
         width: 2.5px !important;
         pointer-events: none;
         z-index: 2;
-        border-radius: 1px;
-        background: #e5e5e5;
-        transition: transform 0.12s cubic-bezier(0.22, 1, 0.36, 1),
-                    height 0.08s ease;
-        will-change: transform;
+        border-radius: 2px;
+        background: #E2B715;
+        box-shadow: 0 0 8px rgba(226, 183, 21, 0.3);
+        transition: transform 0.12s linear,
+                    height 0.06s linear;
+        will-change: transform, height, opacity;
       }
 
       /* Gentle pulse when idle */
       @keyframes caret-blink {
         0%, 100% { opacity: 1; }
-        50% { opacity: 0.25; }
+        50% { opacity: 0.1; }
       }
       .smooth-cursor.idle {
-        animation: caret-blink 1s ease-in-out infinite;
+        animation: caret-blink 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
       }
 
-      /* ── Scrollbar ──────────────────────────────────────── */
-      ::-webkit-scrollbar { width: 4px; }
-      ::-webkit-scrollbar-track { background: #0a0a0a; }
-      ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
+      /* ── Scrollbar (hidden) ─────────────────────────────── */
+      ::-webkit-scrollbar { display: none; }
+      * { scrollbar-width: none; }
+
+      /* ── Zen mode: hide header & footer (keyboard stays) ── */
+      .app-header,
+      .app-footer {
+        opacity: 1;
+        max-height: 120px;
+        overflow: hidden;
+        transform: translate3d(0, 0, 0);
+        filter: blur(0px);
+        transition:
+          opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+          max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+          filter 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+          padding 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+          border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .zen-mode .app-header {
+        opacity: 0;
+        pointer-events: none;
+        max-height: 0;
+        transform: translate3d(0, -20px, 0);
+        filter: blur(8px);
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        border-color: transparent !important;
+      }
+
+      .zen-mode .app-footer {
+        opacity: 0;
+        pointer-events: none;
+        max-height: 0;
+        transform: translate3d(0, 12px, 0);
+        filter: blur(8px);
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+
+      .kb-wrap {
+        transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      /* Zen mode: text area fills vertical space smoothly */
+      .typing-main {
+        transition: padding 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .zen-mode .typing-main {
+        flex: 1;
+        justify-content: center;
+      }
+
+      /* ── Smooth keyboard key transitions ────────────────── */
+      .kb-key {
+        transition:
+          background 0.1s cubic-bezier(0.16, 1, 0.3, 1),
+          border-color 0.1s cubic-bezier(0.16, 1, 0.3, 1),
+          color 0.1s cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.08s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      }
+
+      /* ── Smooth button hovers ───────────────────────────── */
+      .nav-btn,
+      .length-btn {
+        transition:
+          background 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+          border-color 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+          color 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.18s ease !important;
+      }
+      .nav-btn:hover {
+        border-color: #7a7b7e;
+        color: #bbb;
+      }
+      .length-btn:hover {
+        border-color: #656669;
+        color: #aaa;
+      }
+
+      /* ── Ultra-smooth char color transitions ────────────── */
+      .typing-text span {
+        transition: color 0.06s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      }
+
+      /* ── Live stats smooth entry ───────────────────────── */
+      @keyframes stats-fade-in {
+        from { opacity: 0; transform: translate3d(0, -6px, 0); }
+        to   { opacity: 0.75; transform: translate3d(0, 0, 0); }
+      }
+      .live-stats {
+        animation: stats-fade-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      /* ── Hide mouse cursor ─────────────────────────────── */
+      .hide-cursor,
+      .hide-cursor * {
+        cursor: none !important;
+      }
+
+      /* ── Start hint fade ───────────────────────────────── */
+      @keyframes hint-fade-in {
+        from { opacity: 0; transform: translate3d(0, 6px, 0); }
+        to { opacity: 1; transform: translate3d(0, 0, 0); }
+      }
+      .start-hint {
+        animation: hint-fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      /* ── Result screen entry ───────────────────────────── */
+      @keyframes result-fade-in {
+        from { opacity: 0; transform: translate3d(0, 16px, 0) scale(0.97); }
+        to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+      }
+      .result-screen {
+        animation: result-fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      /* ── Responsive: Large monitors (1920+) ─────────────── */
+      @media (min-width: 1920px) {
+        .typing-main { max-width: 1500px !important; padding: 48px 64px 24px !important; }
+        .typing-text { font-size: 36px !important; max-height: 380px !important; font-weight: 400 !important; line-height: 1.65 !important; }
+        .kb-key { width: 42px !important; height: 38px !important; font-size: 13px !important; }
+        .kb-key-wide { width: 62px !important; }
+        .kb-key-space { width: 260px !important; }
+        .kb-wrap { gap: 5px !important; padding: 20px 48px 12px !important; }
+        .kb-row { gap: 5px !important; }
+      }
+
+      /* ── Responsive: Standard laptops (1440-1919) ───────── */
+      @media (min-width: 1440px) and (max-width: 1919px) {
+        .typing-main { max-width: 1300px !important; }
+        .typing-text { font-size: 32px !important; font-weight: 400 !important; line-height: 1.65 !important; }
+      }
+
+      /* ── Responsive: 13" MacBook / small laptops (1280-1439) */
+      @media (min-width: 1280px) and (max-width: 1439px) {
+        .typing-main { max-width: 1100px !important; padding: 36px 40px 18px !important; }
+        .typing-text { font-size: 28px !important; max-height: 300px !important; font-weight: 400 !important; line-height: 1.65 !important; }
+        .kb-key { width: 34px !important; height: 30px !important; font-size: 11px !important; }
+        .kb-key-wide { width: 50px !important; }
+        .kb-key-space { width: 200px !important; }
+      }
+
+      /* ── Responsive: Small screens (1024-1279) ──────────── */
+      @media (min-width: 1024px) and (max-width: 1279px) {
+        .typing-main { max-width: 920px !important; padding: 32px 32px 16px !important; }
+        .typing-text { font-size: 24px !important; max-height: 280px !important; line-height: 1.65 !important; font-weight: 400 !important; }
+        .kb-key { width: 30px !important; height: 27px !important; font-size: 10px !important; }
+        .kb-key-wide { width: 44px !important; font-size: 9px !important; }
+        .kb-key-space { width: 180px !important; }
+        .kb-wrap { padding: 12px 24px 6px !important; }
+        .kb-row { gap: 3px !important; }
+        .app-header { padding: 12px 24px !important; gap: 16px !important; }
+        .nav-btn { font-size: 10px !important; padding: 4px 8px !important; }
+        .length-btn { font-size: 9px !important; padding: 3px 6px !important; }
+      }
+
+      /* ── Responsive: Tablets / narrow windows (768-1023) ── */
+      @media (max-width: 1023px) {
+        .typing-main { max-width: 700px !important; padding: 24px 20px 12px !important; }
+        .typing-text { font-size: 18px !important; max-height: 220px !important; line-height: 1.65 !important; font-weight: 400 !important; }
+        .kb-wrap { display: none !important; }
+        .app-header { padding: 10px 16px !important; gap: 12px !important; flex-wrap: wrap !important; }
+        .nav-btn { font-size: 9px !important; padding: 4px 7px !important; }
+        .length-btn { font-size: 8px !important; padding: 3px 5px !important; }
+        .app-logo { font-size: 15px !important; }
+        .stats-bar { padding: 6px 16px !important; font-size: 10px !important; }
+      }
+
+      /* ── Responsive: Mobile (< 768) ─────────────────────── */
+      @media (max-width: 767px) {
+        .typing-main { padding: 16px 12px 8px !important; }
+        .typing-text { font-size: 14px !important; max-height: 180px !important; line-height: 1.65 !important; font-weight: 400 !important; }
+        .app-header { gap: 8px !important; padding: 8px 12px !important; }
+        .nav-btn { font-size: 8px !important; padding: 3px 6px !important; }
+        .app-logo { font-size: 13px !important; margin-right: 4px !important; }
+        .app-logo img { width: 18px !important; height: 18px !important; }
+      }
     `}</style>
   );
 }

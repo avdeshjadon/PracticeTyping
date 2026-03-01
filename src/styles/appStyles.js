@@ -1,6 +1,27 @@
+// ----------------------------------------------------------------------------
+// LearnTyping -- Browser-Based Typing Practice & Training Application
+// ----------------------------------------------------------------------------
+// Author   : Avdesh Jadon
+// GitHub   : https://github.com/avdeshjadon
+// License  : MIT License -- free to use, modify, and distribute.
+//            See LICENSE file in the project root for full license text.
+// ----------------------------------------------------------------------------
+// If this project helped you, consider starring the repository, opening a
+// pull request, or reporting issues on GitHub. Contributions are welcome.
+// ----------------------------------------------------------------------------
+//
+// appStyles.js -- Application-Wide Inline Style Objects
+// =======================================================
+// Exports JS objects consumed as `style={...}` props across the app:
+// header, nav buttons, length selector, main layout, text display,
+// character-state colours, footer, and start-hint.
+//
+// All transition timings use cubic-bezier(0.22, 1, 0.36, 1) for a
+// consistent, butter-smooth feel.
+// ----------------------------------------------------------------------------
+
 import TOKENS from "../constants/tokens";
 
-// ─── App-level styles ───────────────────────────────────────────────────────
 export const appStyle = {
   minHeight: "100vh",
   background: TOKENS.bg,
@@ -23,9 +44,9 @@ export const headerStyle = {
 };
 
 export const logoStyle = {
-  fontSize: 18,
-  fontWeight: 600,
-  color: TOKENS.green,
+  fontSize: 22,
+  fontWeight: 700,
+  color: TOKENS.yellow,
   letterSpacing: "0.15em",
   textTransform: "lowercase",
   marginRight: 8,
@@ -45,7 +66,7 @@ export const navBtnStyle = {
   borderRadius: 4,
   cursor: "pointer",
   letterSpacing: "0.05em",
-  transition: "all 0.15s",
+  transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
 };
 
 export const navBtnActiveStyle = {
@@ -70,7 +91,7 @@ export const lengthBtnStyle = {
   borderRadius: 3,
   cursor: "pointer",
   letterSpacing: "0.05em",
-  transition: "all 0.15s",
+  transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
 };
 
 export const lengthBtnActiveStyle = { borderColor: TOKENS.dim, color: "#aaa" };
@@ -83,7 +104,7 @@ export const iconBtnStyle = {
   fontSize: 14,
   cursor: "pointer",
   padding: "4px 6px",
-  transition: "all 0.15s",
+  transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
 };
 
 // ─── Stats bar ──────────────────────────────────────────────────────────────
@@ -108,8 +129,8 @@ export const mainStyle = {
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  padding: "40px 32px 20px",
-  maxWidth: 900,
+  padding: "40px 48px 20px",
+  maxWidth: 1300,
   margin: "0 auto",
   width: "100%",
 };
@@ -144,27 +165,30 @@ export const startHintStyle = {
 
 // ─── Text display ───────────────────────────────────────────────────────────
 export const textAreaStyle = {
-  fontSize: 20,
-  lineHeight: 2.2,
-  letterSpacing: "0.04em",
-  maxHeight: 280,
+  fontSize: 32,
+  fontWeight: 400,
+  fontFamily: "'Roboto Mono', 'JetBrains Mono', monospace",
+  lineHeight: 1.65,
+  letterSpacing: "0.01em",
+  maxHeight: 320,
   overflowY: "auto",
   overflowX: "hidden",
   textAlign: "left",
   width: "100%",
-  wordBreak: "break-all",
+  wordBreak: "normal",
+  overflowWrap: "normal",
   position: "relative",
   scrollBehavior: "smooth",
 };
 
 export const charStyle = {
-  color: "#3e3e3e",
+  color: "#656669",
   display: "inline",
-  transition: "color 0.12s ease",
+  transition: "color 0.06s cubic-bezier(0.16, 1, 0.3, 1)",
   position: "relative",
 };
 
-export const charCorrectStyle = { color: TOKENS.green };
+export const charCorrectStyle = { color: "#D1D0C5" };
 
 export const charWrongStyle = {
   color: TOKENS.red,
@@ -179,6 +203,6 @@ export const footerStyle = { padding: "8px 32px 12px", textAlign: "center" };
 
 export const footerHintStyle = {
   fontSize: 10,
-  color: TOKENS.muted,
+  color: "#656669",
   letterSpacing: "0.08em",
 };

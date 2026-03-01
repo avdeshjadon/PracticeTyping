@@ -1,3 +1,17 @@
+// ----------------------------------------------------------------------------
+// LearnTyping -- Browser-Based Typing Practice & Training Application
+// ----------------------------------------------------------------------------
+// Author   : Avdesh Jadon
+// GitHub   : https://github.com/avdeshjadon
+// License  : MIT License -- free to use, modify, and distribute.
+//            See LICENSE file in the project root for full license text.
+// ----------------------------------------------------------------------------
+//
+// stories/numbers.js -- Number Row Practice Texts
+// =================================================
+// Story pool for keys: 0-9 space
+// ----------------------------------------------------------------------------
+
 // numbers: 0-9 space
 
 const numbers = [

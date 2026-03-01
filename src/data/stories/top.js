@@ -1,3 +1,17 @@
+// ----------------------------------------------------------------------------
+// LearnTyping -- Browser-Based Typing Practice & Training Application
+// ----------------------------------------------------------------------------
+// Author   : Avdesh Jadon
+// GitHub   : https://github.com/avdeshjadon
+// License  : MIT License -- free to use, modify, and distribute.
+//            See LICENSE file in the project root for full license text.
+// ----------------------------------------------------------------------------
+//
+// stories/top.js -- Top Row Practice Texts
+// ==========================================
+// Story pool for keys: q w e r t y u i o p space
+// ----------------------------------------------------------------------------
+
 // top row: q w e r t y u i o p space
 // Word pool: port, pour, power, poetry, wrote, write, writer, tower, type, quiet,
 //            outer, tippy, owt, riot, two, were, rip, trip, wire, writ, prow, tow,

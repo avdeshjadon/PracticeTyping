@@ -1,3 +1,17 @@
+// ----------------------------------------------------------------------------
+// LearnTyping -- Browser-Based Typing Practice & Training Application
+// ----------------------------------------------------------------------------
+// Author   : Avdesh Jadon
+// GitHub   : https://github.com/avdeshjadon
+// License  : MIT License -- free to use, modify, and distribute.
+//            See LICENSE file in the project root for full license text.
+// ----------------------------------------------------------------------------
+//
+// stories/homeHalf.js -- Home Row (Basic) Practice Texts
+// =======================================================
+// Story pool for keys: a s d f j k l ; space
+// ----------------------------------------------------------------------------
+
 // home_half: a s d f j k l ; space
 // Word pool: a, ad, add, adds, ads, alas, all, as, ask, dad, dads, fad, fads,
 //            fall, falls, flask, flasks, lad, lads, lass, sad, salad, salads

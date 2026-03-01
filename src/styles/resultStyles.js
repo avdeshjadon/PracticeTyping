@@ -1,3 +1,22 @@
+// ----------------------------------------------------------------------------
+// LearnTyping -- Browser-Based Typing Practice & Training Application
+// ----------------------------------------------------------------------------
+// Author   : Avdesh Jadon
+// GitHub   : https://github.com/avdeshjadon
+// License  : MIT License -- free to use, modify, and distribute.
+//            See LICENSE file in the project root for full license text.
+// ----------------------------------------------------------------------------
+// If this project helped you, consider starring the repository, opening a
+// pull request, or reporting issues on GitHub. Contributions are welcome.
+// ----------------------------------------------------------------------------
+//
+// resultStyles.js -- Result Screen Style Objects
+// ================================================
+// Inline style objects for the post-session result screen: stat cards,
+// dividers, action buttons, and mode label. Transitions use the same
+// spring-like cubic-bezier curve as the rest of the app.
+// ----------------------------------------------------------------------------
+
 import TOKENS from "../constants/tokens";
 
 export const resultScreenStyle = {
@@ -52,15 +71,15 @@ export const resultBtnStyle = {
   background: "none",
   borderWidth: 1,
   borderStyle: "solid",
-  borderColor: TOKENS.green,
-  color: TOKENS.green,
+  borderColor: TOKENS.yellow,
+  color: TOKENS.yellow,
   fontFamily: TOKENS.fontMono,
   fontSize: 12,
   padding: "10px 24px",
   borderRadius: 4,
   cursor: "pointer",
   letterSpacing: "0.08em",
-  transition: "all 0.15s",
+  transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
 };
 
 export const resultBtnSecondaryStyle = {

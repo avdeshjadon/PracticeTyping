@@ -1,19 +1,36 @@
+// ----------------------------------------------------------------------------
+// LearnTyping -- Browser-Based Typing Practice & Training Application
+// ----------------------------------------------------------------------------
+// Author   : Avdesh Jadon
+// GitHub   : https://github.com/avdeshjadon
+// License  : MIT License -- free to use, modify, and distribute.
+//            See LICENSE file in the project root for full license text.
+// ----------------------------------------------------------------------------
+// If this project helped you, consider starring the repository, opening a
+// pull request, or reporting issues on GitHub. Contributions are welcome.
+// ----------------------------------------------------------------------------
+//
+// useTypingSession.js -- Core Typing Session Hook
+// =================================================
+// Custom React hook that owns all typing-session state and keyboard logic.
+//
+// Responsibilities:
+//   - Story generation via getRandomStory (per mode + length)
+//   - Keystroke handling: correct/wrong marking, backspace, Esc/Tab
+//   - Precision timer using Date.now() delta (drift-proof)
+//   - Derived stats: WPM (shown after 3s to avoid early inflation),
+//     accuracy (clamped 0-100), total characters
+//   - Flash feedback (correct/wrong/backspace visual pulse)
+//   - resetSession (new story) and restartSameStory (same text, fresh stats)
+//
+// Uses refs for all hot-path values to keep handleKey stable and avoid
+// tearing down/re-adding the keydown listener on every keystroke.
+// ----------------------------------------------------------------------------
+
 import { useState, useEffect, useCallback, useRef } from "react";
 import MODES from "../data/modes";
 import CHAR_STATE from "../constants/charState";
 import getRandomStory from "../utils/getRandomStory";
-
-/**
- * Core typing session hook — manages all state and keyboard logic.
- *
- * BUG FIXES vs original:
- * 1. Uses refs for hot-path state (cursor, charStates, errors, story) to avoid
- *    recreating handleKey on every keystroke (stale closure + perf fix).
- * 2. Timer uses Date.now() delta instead of setInterval increment (drift fix).
- * 3. Accuracy clamped to 0-100 (negative accuracy fix after backspace).
- * 4. Flash timeout cleaned up on unmount/reset (memory leak fix).
- * 5. startTimeRef used for sub-second WPM on first second.
- */
 export default function useTypingSession() {
   const [mode, setMode] = useState(MODES[0]);
   const [length, setLength] = useState("medium");
@@ -27,7 +44,6 @@ export default function useTypingSession() {
   const [elapsed, setElapsed] = useState(0);
   const [errors, setErrors] = useState(0);
   const [flashKey, setFlashKey] = useState(null);
-  const [soundOn, setSoundOn] = useState(false);
 
   // ── Refs for values accessed inside the keydown handler ──
   // This prevents handleKey from depending on fast-changing state,
@@ -57,11 +73,8 @@ export default function useTypingSession() {
   const flashTimeoutRef = useRef(null);
 
   // ── Derived stats ──
-  // Use real elapsed time for WPM (fixes "0 wpm" during first second)
-  const realElapsed = started && startTimeRef.current
-    ? Math.max(1, elapsed || Math.ceil((Date.now() - startTimeRef.current) / 1000))
-    : 0;
-  const wpm = realElapsed > 0 ? Math.round((cursor / 5) / (realElapsed / 60)) : 0;
+  // Only show WPM after 3 seconds to avoid early-inflation
+  const wpm = elapsed >= 3 ? Math.round((cursor / 5) / (elapsed / 60)) : 0;
   const accuracy = cursor > 0
     ? Math.min(100, Math.max(0, Math.round(((cursor - errors) / cursor) * 100)))
     : 100;
@@ -86,6 +99,22 @@ export default function useTypingSession() {
     if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
     if (flashTimeoutRef.current) { clearTimeout(flashTimeoutRef.current); flashTimeoutRef.current = null; }
   }, []); // No deps — uses refs
+
+  // Restart with SAME story (reset stats only)
+  const restartSameStory = useCallback(() => {
+    const s = storyRef.current;
+    setCharStates(new Array(s.length).fill(CHAR_STATE.IDLE));
+    setCursor(0);
+    setStarted(false);
+    setFinished(false);
+    setElapsed(0);
+    setErrors(0);
+    setFlashKey(null);
+
+    startTimeRef.current = null;
+    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+    if (flashTimeoutRef.current) { clearTimeout(flashTimeoutRef.current); flashTimeoutRef.current = null; }
+  }, []);
 
   const switchMode = useCallback((m) => {
     setMode(m);
@@ -211,7 +240,6 @@ export default function useTypingSession() {
     elapsed,
     errors,
     flashKey,
-    soundOn,
 
     // Derived
     wpm,
@@ -220,9 +248,9 @@ export default function useTypingSession() {
 
     // Actions
     resetSession,
+    restartSameStory,
     switchMode,
     switchLength,
-    setSoundOn,
 
     // The next expected key (for keyboard highlight)
     nextExpectedKey: finished ? null : story[cursor]?.toLowerCase() ?? null,

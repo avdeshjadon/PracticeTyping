@@ -1,3 +1,17 @@
+// ----------------------------------------------------------------------------
+// LearnTyping -- Browser-Based Typing Practice & Training Application
+// ----------------------------------------------------------------------------
+// Author   : Avdesh Jadon
+// GitHub   : https://github.com/avdeshjadon
+// License  : MIT License -- free to use, modify, and distribute.
+//            See LICENSE file in the project root for full license text.
+// ----------------------------------------------------------------------------
+//
+// stories/bottom.js -- Bottom Row Practice Texts
+// ================================================
+// Story pool for keys: z x c v b n m , . / space
+// ----------------------------------------------------------------------------
+
 // bottom row: z x c v b n m , . / space
 // Word pool: vex, zinc, max, box, numb, comb, van, ban, cab, can, man, nab, comma, bam,vc
 
