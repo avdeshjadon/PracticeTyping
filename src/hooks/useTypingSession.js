@@ -34,9 +34,11 @@ import getRandomStory from "../utils/getRandomStory";
 export default function useTypingSession() {
   const [mode, setMode] = useState(MODES[0]);
   const [length, setLength] = useState("medium");
-  const [story, setStory] = useState(() => getRandomStory("home_half", "medium"));
+  const [story, setStory] = useState(() =>
+    getRandomStory("home_half", "medium"),
+  );
   const [charStates, setCharStates] = useState(() =>
-    new Array(story.length).fill(CHAR_STATE.IDLE)
+    new Array(story.length).fill(CHAR_STATE.IDLE),
   );
   const [cursor, setCursor] = useState(0);
   const [started, setStarted] = useState(false);
@@ -74,10 +76,14 @@ export default function useTypingSession() {
 
   // ── Derived stats ──
   // Only show WPM after 3 seconds to avoid early-inflation
-  const wpm = elapsed >= 3 ? Math.round((cursor / 5) / (elapsed / 60)) : 0;
-  const accuracy = cursor > 0
-    ? Math.min(100, Math.max(0, Math.round(((cursor - errors) / cursor) * 100)))
-    : 100;
+  const wpm = elapsed >= 3 ? Math.round(cursor / 5 / (elapsed / 60)) : 0;
+  const accuracy =
+    cursor > 0
+      ? Math.min(
+          100,
+          Math.max(0, Math.round(((cursor - errors) / cursor) * 100)),
+        )
+      : 100;
   const totalChars = story.length;
 
   // ── Reset session ──
@@ -96,8 +102,14 @@ export default function useTypingSession() {
     setFlashKey(null);
 
     startTimeRef.current = null;
-    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
-    if (flashTimeoutRef.current) { clearTimeout(flashTimeoutRef.current); flashTimeoutRef.current = null; }
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    if (flashTimeoutRef.current) {
+      clearTimeout(flashTimeoutRef.current);
+      flashTimeoutRef.current = null;
+    }
   }, []); // No deps — uses refs
 
   // Restart with SAME story (reset stats only)
@@ -112,19 +124,31 @@ export default function useTypingSession() {
     setFlashKey(null);
 
     startTimeRef.current = null;
-    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
-    if (flashTimeoutRef.current) { clearTimeout(flashTimeoutRef.current); flashTimeoutRef.current = null; }
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    if (flashTimeoutRef.current) {
+      clearTimeout(flashTimeoutRef.current);
+      flashTimeoutRef.current = null;
+    }
   }, []);
 
-  const switchMode = useCallback((m) => {
-    setMode(m);
-    resetSession(m, lengthRef.current);
-  }, [resetSession]);
+  const switchMode = useCallback(
+    (m) => {
+      setMode(m);
+      resetSession(m, lengthRef.current);
+    },
+    [resetSession],
+  );
 
-  const switchLength = useCallback((l) => {
-    setLength(l);
-    resetSession(modeRef.current, l);
-  }, [resetSession]);
+  const switchLength = useCallback(
+    (l) => {
+      setLength(l);
+      resetSession(modeRef.current, l);
+    },
+    [resetSession],
+  );
 
   // ── Timer (uses Date.now delta — fixes drift) ──
   useEffect(() => {
@@ -134,7 +158,10 @@ export default function useTypingSession() {
       }, 250); // Update 4x/sec for smoother display
     }
     return () => {
-      if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     };
   }, [started, finished]);
 
@@ -149,70 +176,80 @@ export default function useTypingSession() {
   }, []);
 
   // ── Keyboard handler (stable — uses refs, not state) ──
-  const handleKey = useCallback((e) => {
-    if (finishedRef.current) return;
+  const handleKey = useCallback(
+    (e) => {
+      if (finishedRef.current) return;
 
-    if (e.key === "Escape") {
-      resetSession();
-      return;
-    }
+      // Ignore keystrokes when holding modifiers (Cmd, Ctrl, Alt)
+      // to allow native browser shortcuts (e.g. Cmd+Option+I for DevTools)
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
 
-    if (e.key === "Tab") {
-      e.preventDefault();
-      const idx = MODES.findIndex((m) => m.id === modeRef.current.id);
-      const next = MODES[(idx + 1) % MODES.length];
-      setMode(next);
-      resetSession(next, lengthRef.current);
-      return;
-    }
-
-    if (e.key === "Backspace") {
-      e.preventDefault();
-      const c = cursorRef.current;
-      if (c === 0) return;
-      const newStates = [...charStatesRef.current];
-      newStates[c - 1] = CHAR_STATE.REVIEW;
-      setCharStates(newStates);
-      setCursor(c - 1);
-      triggerFlash("⌫", null);
-      return;
-    }
-
-    if (e.key.length !== 1) return;
-
-    // Prevent browser defaults for printable keys (e.g. Space scrolling the page)
-    e.preventDefault();
-
-    // Start timer on first real keypress
-    if (!startedRef.current) {
-      setStarted(true);
-      startTimeRef.current = Date.now();
-    }
-
-    const c = cursorRef.current;
-    const expected = storyRef.current[c];
-    const correct = e.key === expected;
-    const newStates = [...charStatesRef.current];
-    newStates[c] = correct ? CHAR_STATE.CORRECT : CHAR_STATE.WRONG;
-    setCharStates(newStates);
-
-    const keyLabel = e.key === " " ? "⎵" : e.key;
-    triggerFlash(keyLabel, correct);
-
-    if (!correct) setErrors((er) => er + 1);
-
-    const newCursor = c + 1;
-    setCursor(newCursor);
-
-    if (newCursor >= storyRef.current.length) {
-      setFinished(true);
-      // Final elapsed snapshot
-      if (startTimeRef.current) {
-        setElapsed(Math.floor((Date.now() - startTimeRef.current) / 1000));
+      if (e.key === "Escape") {
+        resetSession();
+        return;
       }
-      if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
-    }
-  }, [resetSession, triggerFlash]); // Stable deps only
+
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const idx = MODES.findIndex((m) => m.id === modeRef.current.id);
+        const next = MODES[(idx + 1) % MODES.length];
+        setMode(next);
+        resetSession(next, lengthRef.current);
+        return;
+      }
+
+      if (e.key === "Backspace") {
+        e.preventDefault();
+        const c = cursorRef.current;
+        if (c === 0) return;
+        const newStates = [...charStatesRef.current];
+        newStates[c - 1] = CHAR_STATE.REVIEW;
+        setCharStates(newStates);
+        setCursor(c - 1);
+        triggerFlash("⌫", null);
+        return;
+      }
+
+      if (e.key.length !== 1) return;
+
+      // Prevent browser defaults for printable keys (e.g. Space scrolling the page)
+      e.preventDefault();
+
+      // Start timer on first real keypress
+      if (!startedRef.current) {
+        setStarted(true);
+        startTimeRef.current = Date.now();
+      }
+
+      const c = cursorRef.current;
+      const expected = storyRef.current[c];
+      const correct = e.key === expected;
+      const newStates = [...charStatesRef.current];
+      newStates[c] = correct ? CHAR_STATE.CORRECT : CHAR_STATE.WRONG;
+      setCharStates(newStates);
+
+      const keyLabel = e.key === " " ? "⎵" : e.key;
+      triggerFlash(keyLabel, correct);
+
+      if (!correct) setErrors((er) => er + 1);
+
+      const newCursor = c + 1;
+      setCursor(newCursor);
+
+      if (newCursor >= storyRef.current.length) {
+        setFinished(true);
+        // Final elapsed snapshot
+        if (startTimeRef.current) {
+          setElapsed(Math.floor((Date.now() - startTimeRef.current) / 1000));
+        }
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        }
+      }
+    },
+    [resetSession, triggerFlash],
+  ); // Stable deps only
 
   // ── Attach / detach keyboard listener ──
   useEffect(() => {
@@ -253,6 +290,6 @@ export default function useTypingSession() {
     switchLength,
 
     // The next expected key (for keyboard highlight)
-    nextExpectedKey: finished ? null : story[cursor]?.toLowerCase() ?? null,
+    nextExpectedKey: finished ? null : (story[cursor]?.toLowerCase() ?? null),
   };
 }

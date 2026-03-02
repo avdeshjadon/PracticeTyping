@@ -33,6 +33,10 @@ export default function GlobalStyles() {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
+      button:focus,
+      button:focus-visible {
+        outline: none;
+      }
       body {
         background: #333437;
         -webkit-font-smoothing: antialiased;
@@ -103,7 +107,9 @@ export default function GlobalStyles() {
 
       .app-logo {
         opacity: 1;
-        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translate3d(0, 0, 0);
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 20;
       }
 
       /* ── Zen mode: hide header & footer (keyboard stays) ── */
@@ -111,7 +117,7 @@ export default function GlobalStyles() {
       .app-footer {
         opacity: 1;
         max-height: 120px;
-        overflow: hidden;
+        overflow: visible;
         transform: translate3d(0, 0, 0);
         filter: blur(0px);
         transition:
@@ -143,10 +149,11 @@ export default function GlobalStyles() {
           filter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
-      /* Keep logo visible but very subtle */
+      /* Keep logo visible but very faded, exactly where it is */
       .zen-mode .app-logo {
-        opacity: 0.25;
-        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity: 0.15 !important;
+        transform: translate3d(0, 0, 0);
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .zen-mode .app-footer {
@@ -165,11 +172,10 @@ export default function GlobalStyles() {
 
       /* Zen mode: text area fills vertical space smoothly */
       .typing-main {
-        transition: padding 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       }
       .zen-mode .typing-main {
-        flex: 1;
-        justify-content: center;
+        /* the text area no longer needs to pad out the space, it's absolutely centered */
       }
 
       /* ── Smooth keyboard key transitions ────────────────── */
@@ -240,13 +246,14 @@ export default function GlobalStyles() {
 
       /* ── Responsive: Large monitors (1920+) ─────────────── */
       @media (min-width: 1920px) {
-        .typing-main { max-width: 1500px !important; padding: 48px 64px 24px !important; }
+        .typing-main { max-width: 1500px !important; }
         .typing-text { font-size: 36px !important; max-height: 380px !important; font-weight: 400 !important; line-height: 1.65 !important; }
         .kb-key { width: 42px !important; height: 38px !important; font-size: 13px !important; }
         .kb-key-wide { width: 62px !important; }
         .kb-key-space { width: 260px !important; }
         .kb-wrap { gap: 5px !important; padding: 20px 48px 12px !important; }
         .kb-row { gap: 5px !important; }
+        .zen-mode .app-logo { transform: translate3d(0, 0, 0); }
       }
 
       /* ── Responsive: Standard laptops (1440-1919) ───────── */
@@ -266,7 +273,7 @@ export default function GlobalStyles() {
 
       /* ── Responsive: Small screens (1024-1279) ──────────── */
       @media (min-width: 1024px) and (max-width: 1279px) {
-        .typing-main { max-width: 920px !important; padding: 32px 32px 16px !important; }
+        .typing-main { max-width: 920px !important; }
         .typing-text { font-size: 24px !important; max-height: 280px !important; line-height: 1.65 !important; font-weight: 400 !important; }
         .kb-key { width: 30px !important; height: 27px !important; font-size: 10px !important; }
         .kb-key-wide { width: 44px !important; font-size: 9px !important; }
@@ -276,11 +283,12 @@ export default function GlobalStyles() {
         .app-header { padding: 12px 24px !important; gap: 16px !important; }
         .nav-btn { font-size: 10px !important; padding: 4px 8px !important; }
         .length-btn { font-size: 9px !important; padding: 3px 6px !important; }
+        .zen-mode .app-logo { transform: translate3d(0, 0, 0); }
       }
 
       /* ── Responsive: Tablets / narrow windows (768-1023) ── */
       @media (max-width: 1023px) {
-        .typing-main { max-width: 700px !important; padding: 24px 20px 12px !important; }
+        .typing-main { max-width: 700px !important; }
         .typing-text { font-size: 18px !important; max-height: 220px !important; line-height: 1.65 !important; font-weight: 400 !important; }
         .kb-wrap { display: none !important; }
         .app-header { padding: 10px 16px !important; gap: 12px !important; flex-wrap: wrap !important; }
@@ -288,16 +296,18 @@ export default function GlobalStyles() {
         .length-btn { font-size: 8px !important; padding: 3px 5px !important; }
         .app-logo { font-size: 15px !important; }
         .stats-bar { padding: 6px 16px !important; font-size: 10px !important; }
+        .zen-mode .app-logo { transform: translate3d(0, 0, 0); }
       }
 
       /* ── Responsive: Mobile (< 768) ─────────────────────── */
       @media (max-width: 767px) {
-        .typing-main { padding: 16px 12px 8px !important; }
+        .typing-main { max-width: 100% !important; }
         .typing-text { font-size: 14px !important; max-height: 180px !important; line-height: 1.65 !important; font-weight: 400 !important; }
         .app-header { gap: 8px !important; padding: 8px 12px !important; }
         .nav-btn { font-size: 8px !important; padding: 3px 6px !important; }
         .app-logo { font-size: 13px !important; margin-right: 4px !important; }
         .app-logo img { width: 18px !important; height: 18px !important; }
+        .zen-mode .app-logo { transform: translate3d(0, 5vh, 0); }
       }
     `}</style>
   );

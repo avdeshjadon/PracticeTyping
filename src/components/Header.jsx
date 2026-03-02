@@ -26,8 +26,11 @@ import {
   headerStyle,
   logoStyle,
   navStyle,
+  navDropdownContainerStyle,
   navBtnStyle,
-  navBtnActiveStyle,
+  navDropdownListStyle,
+  navDropdownItemStyle,
+  navDropdownItemActiveStyle,
   controlsStyle,
   lengthGroupStyle,
   lengthBtnStyle,
@@ -67,7 +70,24 @@ const KbIcon = ({ active }) => (
   </svg>
 );
 
+import { useState, useRef, useEffect } from "react";
+
 export default function Header({ mode, length, onSwitchMode, onSwitchLength, showKeyboard, onToggleKeyboard, onNextStory, isTyping }) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <header className="app-header" style={headerStyle}>
       <div className="app-logo" style={logoStyle}>
@@ -75,19 +95,44 @@ export default function Header({ mode, length, onSwitchMode, onSwitchLength, sho
         PracticeTyping
       </div>
       <nav style={navStyle}>
-        {MODES.map((m) => (
+        <div ref={dropdownRef} style={navDropdownContainerStyle}>
           <button
-            key={m.id}
-            onClick={() => onSwitchMode(m)}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="nav-btn"
             style={{
               ...navBtnStyle,
-              ...(mode.id === m.id ? navBtnActiveStyle : {}),
+              paddingRight: 8,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6
             }}
           >
-            {m.label}
+            {mode.label}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
-        ))}
+          
+          {isDropdownOpen && (
+            <div style={navDropdownListStyle}>
+              {MODES.map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() => {
+                    onSwitchMode(m);
+                    setIsDropdownOpen(false);
+                  }}
+                  style={{
+                    ...navDropdownItemStyle,
+                    ...(mode.id === m.id ? navDropdownItemActiveStyle : {}),
+                  }}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </nav>
       {!isTyping && (
         <button

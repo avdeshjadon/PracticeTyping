@@ -17,7 +17,6 @@
 // Covers natural prose with varied vocabulary for advanced typing practice.
 
 const full = [
-
   // 1 — The Morning Routine
   "every morning begins the same way. the alarm rings at six and i drag myself out of bed. the kitchen smells like fresh coffee because the machine is set on a timer. i pour a cup, add a little milk, and sit by the window. outside, the birds are already busy. a pair of sparrows chase each other across the yard while a crow watches from the fence. i check my phone for messages, scroll through the news, and plan the day ahead. breakfast is usually simple: toast with butter and a sliced banana. sometimes i make eggs if there is enough time. after eating i take a quick shower, get dressed, and grab my bag. the walk to the bus stop takes about ten minutes. i like that short walk because it gives me a moment to think. the bus arrives at seven fifteen, and by eight i am sitting at my desk. the office is quiet in the early hours, which is perfect for deep work. i open my laptop, review the task list, and start coding. the first hour flies by before anyone else shows up. that peaceful window of focus is the most productive part of my entire day, and i guard it carefully.",
 
@@ -89,7 +88,6 @@ const full = [
 
   // 24 — Why I Chose Programming
   "i wrote my first line of code when i was seventeen. it was a simple program that printed my name on the screen, and it felt like magic. before that, computers were boxes that ran games and played music. the idea that i could tell one what to do, and it would obey, opened up a world i had never imagined. i spent the rest of that summer learning the basics: variables, loops, conditions, and functions. most of the code i wrote was terrible, full of bugs and messy logic, but every small success kept me going. by the end of the year i had built a calculator, a basic quiz game, and a simple website. when it came time to choose a career, the decision was easy. i studied computer science at university, where the coursework expanded my understanding far beyond what tutorials could teach. algorithms, data structures, operating systems, and networks all fit together like pieces of a puzzle. after graduating, i joined a small team building web applications. the real world taught me lessons that school could not: how to read other people's code, how to communicate technical ideas clearly, and how to stay calm when production systems break at two in the morning. programming is not always glamorous, but it rewards curiosity, patience, and persistence. every day i learn something new, and even after all these years, a working piece of code still feels a little bit like magic.",
-
 ];
 
 export default full;

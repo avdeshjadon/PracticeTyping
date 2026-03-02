@@ -102,41 +102,18 @@ export default function TextDisplay({ mode, story, charStates, cursor, started, 
       {started && (
         <div className="live-stats" style={{
           display: "flex",
-          alignItems: "center",
+          justifyContent: "flex-start",
+          width: "100%",
           gap: 28,
-          marginBottom: 28,
-          fontSize: 20,
+          marginBottom: 12,
+          fontSize: 24,
           fontFamily: "'Roboto Mono', monospace",
           letterSpacing: "0.06em",
-          opacity: 0.75,
+          opacity: 0.85,
+          color: "#E2B715",
           transition: "opacity 0.3s ease",
         }}>
-          <span style={{ color: "#E2B715" }}>{wpm} <span style={{ fontSize: 14, color: "#656669" }}>wpm</span></span>
-          <span style={{ color: "#D1D0C5" }}>{elapsed}s</span>
-          <button
-            onClick={(e) => { e.preventDefault(); onRestart(); }}
-            title="Restart same text"
-            style={{
-              background: "none",
-              border: "none",
-              color: "#656669",
-              cursor: "pointer",
-              padding: "2px 6px",
-              fontSize: 20,
-              lineHeight: 1,
-              borderRadius: 4,
-              transition: "color 0.15s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
-              display: "flex",
-              alignItems: "center",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = '#E2B715'; e.currentTarget.style.transform = 'rotate(90deg)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = '#656669'; e.currentTarget.style.transform = 'rotate(0deg)'; }}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M23 4v6h-6" />
-              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-            </svg>
-          </button>
+          <span>{elapsed}</span>
         </div>
       )}
 
@@ -200,6 +177,55 @@ export default function TextDisplay({ mode, story, charStates, cursor, started, 
 
           return elements;
         })()}
+      </div>
+
+      <div style={{
+          marginTop: 48,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 16,
+      }}>
+        {started && (
+          <button
+            onClick={(e) => { e.preventDefault(); onRestart(); }}
+            className="restart-btn"
+            title="Restart same text"
+            style={{
+              background: "none",
+              border: "none",
+              color: "#656669",
+              cursor: "pointer",
+              padding: "8px",
+              fontSize: 20,
+              lineHeight: 1,
+              borderRadius: 4,
+              transition: "color 0.15s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = '#E2B715'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = '#656669'; }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M23 4v6h-6" />
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+            </svg>
+          </button>
+        )}
+
+        {!started && (
+          <div style={{
+            textAlign: "center",
+            fontSize: 11,
+            color: "#656669",
+            letterSpacing: "0.08em",
+            opacity: 0.7,
+          }}>
+            esc - <span style={{color: "#E2B715"}}>reset</span> &nbsp;·&nbsp; tab - <span style={{color: "#E2B715"}}>switch mode</span>
+          </div>
+        )}
       </div>
     </>
   );
