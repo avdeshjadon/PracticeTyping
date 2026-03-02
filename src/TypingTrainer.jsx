@@ -34,7 +34,6 @@ import MODES from "./data/modes";
 import useTypingSession from "./hooks/useTypingSession";
 import Header from "./components/Header";
 import TextDisplay from "./components/TextDisplay";
-import VisualKeyboard from "./components/VisualKeyboard";
 import ResultScreen from "./components/ResultScreen";
 import Footer from "./components/Footer";
 import GlobalStyles from "./components/GlobalStyles";
@@ -61,7 +60,6 @@ export default function TypingTrainer() {
     nextExpectedKey,
   } = useTypingSession();
 
-  const [showKeyboard, setShowKeyboard] = useState(false);
   const [mouseHidden, setMouseHidden] = useState(false);
   const [zenActive, setZenActive] = useState(false);
   const mouseTimer = useRef(null);
@@ -120,8 +118,6 @@ export default function TypingTrainer() {
         length={length}
         onSwitchMode={switchMode}
         onSwitchLength={switchLength}
-        showKeyboard={showKeyboard}
-        onToggleKeyboard={() => setShowKeyboard((v) => !v)}
         onNextStory={resetSession}
         isTyping={isTyping}
       />
@@ -151,8 +147,6 @@ export default function TypingTrainer() {
           />
         )}
       </main>
-
-      {!finished && showKeyboard && <VisualKeyboard nextKey={nextExpectedKey} flashKey={flashKey} />}
 
       <Footer />
       <GlobalStyles />

@@ -35,44 +35,11 @@ import {
   lengthGroupStyle,
   lengthBtnStyle,
   lengthBtnActiveStyle,
-  iconBtnStyle,
 } from "../styles/appStyles";
-
-const kbToggleStyle = {
-  ...iconBtnStyle,
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  width: 28,
-  height: 28,
-  borderRadius: 4,
-  opacity: 0.4,
-  transition: "opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s cubic-bezier(0.16, 1, 0.3, 1)",
-};
-
-const kbToggleActiveStyle = {
-  opacity: 1,
-  background: "rgba(226,183,21,0.1)",
-};
-
-const KbIcon = ({ active }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={active ? "#E2B715" : "currentColor"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="4" width="20" height="14" rx="2" />
-    <line x1="6" y1="8" x2="6" y2="8" strokeWidth="2.4" strokeLinecap="round" />
-    <line x1="10" y1="8" x2="10" y2="8" strokeWidth="2.4" strokeLinecap="round" />
-    <line x1="14" y1="8" x2="14" y2="8" strokeWidth="2.4" strokeLinecap="round" />
-    <line x1="18" y1="8" x2="18" y2="8" strokeWidth="2.4" strokeLinecap="round" />
-    <line x1="6" y1="12" x2="6" y2="12" strokeWidth="2.4" strokeLinecap="round" />
-    <line x1="10" y1="12" x2="10" y2="12" strokeWidth="2.4" strokeLinecap="round" />
-    <line x1="14" y1="12" x2="14" y2="12" strokeWidth="2.4" strokeLinecap="round" />
-    <line x1="18" y1="12" x2="18" y2="12" strokeWidth="2.4" strokeLinecap="round" />
-    <line x1="8" y1="16" x2="16" y2="16" />
-  </svg>
-);
 
 import { useState, useRef, useEffect } from "react";
 
-export default function Header({ mode, length, onSwitchMode, onSwitchLength, showKeyboard, onToggleKeyboard, onNextStory, isTyping }) {
+export default function Header({ mode, length, onSwitchMode, onSwitchLength, onNextStory, isTyping }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -176,16 +143,6 @@ export default function Header({ mode, length, onSwitchMode, onSwitchLength, sho
             </button>
           ))}
         </div>
-        <button
-          onClick={onToggleKeyboard}
-          title={showKeyboard ? "Hide keyboard" : "Show keyboard"}
-          style={{
-            ...kbToggleStyle,
-            ...(showKeyboard ? kbToggleActiveStyle : {}),
-          }}
-        >
-          <KbIcon active={showKeyboard} />
-        </button>
       </div>
     </header>
   );
