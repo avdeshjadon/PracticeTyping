@@ -10,30 +10,28 @@
 // pull request, or reporting issues on GitHub. Contributions are welcome.
 // ----------------------------------------------------------------------------
 //
-// stories/index.js -- Story Pool Registry
-// =========================================
-// Re-exports all per-mode story arrays into a single lookup object
-// keyed by mode id (e.g. "home_half", "top", "full").
+// homeRowLHand.js -- Home Row Left Hand Practice
+// ================================================
+// Practice strings restricted to a, s, d, f characters.
+// This mode requires holding the 'j' key.
 // ----------------------------------------------------------------------------
 
-import homeHalf from "./homeHalf";
-import homeFull from "./homeFull";
-import homeRowLHand from "./homeRowLHand";
-import homeRowRHand from "./homeRowRHand";
-import top from "./top";
-import bottom from "./bottom";
-import numbers from "./numbers";
-import full from "./full";
+const homeRowLHand = [
+  "asd fas daf sad",
+  "fad das saf asf",
+  "ass faf dad sas",
+  "das fad sad asf",
+  "fas dad saf das",
+  "asdf sadf fdas dasf",
+  "fdsa asdf sdaf fads",
+  "sadf fdas asdf dasf",
+  "fdas sdaf fads asdf",
+  "asdf fdas dasf sdaf",
+  "ass faf dad sas daf sad fas das saf asf fad das sad faf ass asd",
+  "fas dad saf das fad das saf asf ass faf dad sas das fad sad asf",
+  "fad das saf asf ass faf dad sas daf sad fas das saf asf fad das",
+  "sadf fdas asdf dasf fdsa asdf sdaf fads asdf fdas dasf sdaf",
+  "asdf sadf fdas dasf sadf fdas asdf dasf fdsa asdf sdaf fads",
+];
 
-const STORIES = {
-  home_half: homeHalf,
-  home_full: homeFull,
-  home_row_l_hand: homeRowLHand,
-  home_row_r_hand: homeRowRHand,
-  top,
-  bottom,
-  numbers,
-  full,
-};
-
-export default STORIES;
+export default homeRowLHand;

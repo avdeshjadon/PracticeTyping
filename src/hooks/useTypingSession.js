@@ -46,6 +46,7 @@ export default function useTypingSession() {
   const [elapsed, setElapsed] = useState(0);
   const [errors, setErrors] = useState(0);
   const [flashKey, setFlashKey] = useState(null);
+  const [isHoldKeyActive, setIsHoldKeyActive] = useState(false);
 
   // ── Refs for values accessed inside the keydown handler ──
   // This prevents handleKey from depending on fast-changing state,
@@ -59,6 +60,7 @@ export default function useTypingSession() {
   const finishedRef = useRef(finished);
   const modeRef = useRef(mode);
   const lengthRef = useRef(length);
+  const isHoldKeyActiveRef = useRef(isHoldKeyActive);
 
   // Keep refs in sync
   cursorRef.current = cursor;
@@ -69,6 +71,7 @@ export default function useTypingSession() {
   finishedRef.current = finished;
   modeRef.current = mode;
   lengthRef.current = length;
+  isHoldKeyActiveRef.current = isHoldKeyActive;
 
   const timerRef = useRef(null);
   const startTimeRef = useRef(null);
@@ -100,6 +103,7 @@ export default function useTypingSession() {
     setElapsed(0);
     setErrors(0);
     setFlashKey(null);
+    setIsHoldKeyActive(false);
 
     startTimeRef.current = null;
     if (timerRef.current) {
@@ -122,6 +126,7 @@ export default function useTypingSession() {
     setElapsed(0);
     setErrors(0);
     setFlashKey(null);
+    setIsHoldKeyActive(false);
 
     startTimeRef.current = null;
     if (timerRef.current) {
@@ -184,6 +189,12 @@ export default function useTypingSession() {
       // to allow native browser shortcuts (e.g. Cmd+Option+I for DevTools)
       if (e.metaKey || e.ctrlKey || e.altKey) return;
 
+      const currentMode = modeRef.current;
+      if (currentMode.holdKey && e.key === currentMode.holdKey) {
+        setIsHoldKeyActive(true);
+        return; // Don't process this key further
+      }
+
       if (e.key === "Escape") {
         resetSession();
         return;
@@ -223,6 +234,12 @@ export default function useTypingSession() {
       // Prevent browser defaults for printable keys (e.g. Space scrolling the page)
       e.preventDefault();
 
+      // Check if this mode requires a holding key, and if it's currently held
+      if (currentMode.holdKey && !isHoldKeyActiveRef.current) {
+        // Just trigger a warning blink or prevent typing
+        return;
+      }
+
       // Start timer on first real keypress
       if (!startedRef.current) {
         setStarted(true);
@@ -261,8 +278,20 @@ export default function useTypingSession() {
 
   // ── Attach / detach keyboard listener ──
   useEffect(() => {
+    // Add keyup listener to detect when the holdKey is released
+    const handleKeyUp = (e) => {
+      const currentMode = modeRef.current;
+      if (currentMode.holdKey && e.key === currentMode.holdKey) {
+        setIsHoldKeyActive(false);
+      }
+    };
+
     window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKey);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
   }, [handleKey]);
 
   // ── Cleanup on unmount ──
@@ -285,6 +314,7 @@ export default function useTypingSession() {
     elapsed,
     errors,
     flashKey,
+    isHoldKeyActive,
 
     // Derived
     wpm,

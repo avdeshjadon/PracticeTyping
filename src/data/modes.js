@@ -26,6 +26,22 @@ const MODES = [
     keys: "asdfjkl;",
   },
   {
+    id: "home_row_l_hand",
+    category: "Home Row",
+    label: "Home Row (L Hand)",
+    subtitle: "a s d f  | hold  j",
+    keys: "asdf",
+    holdKey: "j",
+  },
+  {
+    id: "home_row_r_hand",
+    category: "Home Row",
+    label: "Home Row (R Hand)",
+    subtitle: "j k l ;  | hold  f",
+    keys: "jkl;",
+    holdKey: "f",
+  },
+  {
     id: "home_full",
     category: "Home Row",
     label: "Home Row (Full)",

@@ -58,6 +58,7 @@ export default function TypingTrainer() {
     switchMode,
     switchLength,
     nextExpectedKey,
+    isHoldKeyActive,
   } = useTypingSession();
 
   const [mouseHidden, setMouseHidden] = useState(false);
@@ -144,6 +145,7 @@ export default function TypingTrainer() {
             elapsed={elapsed}
             onRestart={restartSameStory}
             onNextStory={resetSession}
+            isHoldKeyActive={isHoldKeyActive}
           />
         )}
       </main>

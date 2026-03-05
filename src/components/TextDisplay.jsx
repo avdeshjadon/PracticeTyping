@@ -49,6 +49,7 @@ export default function TextDisplay({
   elapsed,
   onRestart,
   onNextStory,
+  isHoldKeyActive,
 }) {
   const textRef = useRef(null);
   const cursorRef = useRef(null);
@@ -156,7 +157,16 @@ export default function TextDisplay({
         )}
       </div>
 
-      <div ref={textRef} className="typing-text" style={textAreaStyle}>
+      <div
+        ref={textRef}
+        className="typing-text"
+        style={{
+          ...textAreaStyle,
+          position: "relative",
+          opacity: mode.holdKey && started && !isHoldKeyActive ? 0.2 : 1,
+          transition: "opacity 0.2s ease",
+        }}
+      >
         {/* Floating smooth cursor */}
         <div ref={cursorRef} className="smooth-cursor" />
 
@@ -225,6 +235,41 @@ export default function TextDisplay({
           return elements;
         })()}
       </div>
+
+      {mode.holdKey && started && !isHoldKeyActive && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            color: "var(--text)",
+            fontSize: "2rem",
+            fontWeight: "300",
+            fontFamily: "'Roboto Mono', monospace",
+            textAlign: "center",
+            zIndex: 10,
+            whiteSpace: "nowrap",
+            pointerEvents: "none",
+          }}
+        >
+          Hold the{" "}
+          <span
+            style={{
+              background: "var(--surface)",
+              padding: "4px 12px",
+              borderRadius: "6px",
+              border: "1px solid var(--muted)",
+              display: "inline-block",
+              color: "var(--textMain)",
+              margin: "0 6px",
+            }}
+          >
+            {mode.holdKey}
+          </span>{" "}
+          key while typing this lesson.
+        </div>
+      )}
 
       <div
         style={{
