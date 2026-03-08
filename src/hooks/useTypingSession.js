@@ -32,10 +32,11 @@ import MODES from "../data/modes";
 import CHAR_STATE from "../constants/charState";
 import getRandomStory from "../utils/getRandomStory";
 export default function useTypingSession() {
-  const [mode, setMode] = useState(MODES[0]);
+  const defaultMode = MODES.find((m) => m.id === "full") || MODES[7];
+  const [mode, setMode] = useState(defaultMode);
   const [length, setLength] = useState("medium");
   const [story, setStory] = useState(() =>
-    getRandomStory("home_half", "medium"),
+    getRandomStory(defaultMode.id, "medium"),
   );
   const [charStates, setCharStates] = useState(() =>
     new Array(story.length).fill(CHAR_STATE.IDLE),

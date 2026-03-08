@@ -8,16 +8,13 @@ const ThemeContext = createContext({
 export const useTheme = () => useContext(ThemeContext);
 
 export function ThemeProvider({ children }) {
-  // Read initial theme preference from local storage or OS settings
+  // Read initial theme preference from local storage
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem("practiceTyping-theme");
     if (savedTheme) return savedTheme;
 
-    // Fall back to system preference
-    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
-      return "light";
-    }
-    return "dark"; // Default to dark instead of forcing light on dark preference
+    // Default to dark theme as requested
+    return "dark";
   });
 
   useEffect(() => {

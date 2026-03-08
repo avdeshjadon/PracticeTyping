@@ -330,7 +330,7 @@ export default function GlobalStyles() {
       /* ── Responsive: Large monitors (1920+) ─────────────── */
       @media (min-width: 1920px) {
         .typing-main { max-width: 1500px !important; }
-        .typing-text { font-size: 36px !important; max-height: 380px !important; font-weight: 400 !important; line-height: 1.65 !important; }
+        .typing-text { font-size: 36px !important; max-height: 380px !important; font-weight: 400 !important; line-height: 50px !important; }
         .kb-key { width: 42px !important; height: 38px !important; font-size: 13px !important; }
         .kb-key-wide { width: 62px !important; }
         .kb-key-space { width: 260px !important; }
@@ -342,13 +342,13 @@ export default function GlobalStyles() {
       /* ── Responsive: Standard laptops (1440-1919) ───────── */
       @media (min-width: 1440px) and (max-width: 1919px) {
         .typing-main { max-width: 1300px !important; }
-        .typing-text { font-size: 32px !important; font-weight: 400 !important; line-height: 1.65 !important; }
+        .typing-text { font-size: 32px !important; font-weight: 400 !important; line-height: 50px !important; }
       }
 
       /* ── Responsive: 13" MacBook / small laptops (1280-1439) */
       @media (min-width: 1280px) and (max-width: 1439px) {
         .typing-main { max-width: 1100px !important; padding: 36px 40px 18px !important; }
-        .typing-text { font-size: 28px !important; max-height: 300px !important; font-weight: 400 !important; line-height: 1.65 !important; }
+        .typing-text { font-size: 28px !important; max-height: 300px !important; font-weight: 400 !important; line-height: 50px !important; }
         .kb-key { width: 34px !important; height: 30px !important; font-size: 11px !important; }
         .kb-key-wide { width: 50px !important; }
         .kb-key-space { width: 200px !important; }
@@ -357,7 +357,7 @@ export default function GlobalStyles() {
       /* ── Responsive: Small screens (1024-1279) ──────────── */
       @media (min-width: 1024px) and (max-width: 1279px) {
         .typing-main { max-width: 920px !important; }
-        .typing-text { font-size: 24px !important; max-height: 280px !important; line-height: 1.65 !important; font-weight: 400 !important; }
+        .typing-text { font-size: 24px !important; max-height: 280px !important; line-height: 50px !important; font-weight: 400 !important; }
         .kb-key { width: 30px !important; height: 27px !important; font-size: 10px !important; }
         .kb-key-wide { width: 44px !important; font-size: 9px !important; }
         .kb-key-space { width: 180px !important; }
@@ -372,7 +372,7 @@ export default function GlobalStyles() {
       /* ── Responsive: Tablets / narrow windows (768-1023) ── */
       @media (max-width: 1023px) {
         .typing-main { max-width: 700px !important; }
-        .typing-text { font-size: 18px !important; max-height: 220px !important; line-height: 1.65 !important; font-weight: 400 !important; }
+        .typing-text { font-size: 18px !important; max-height: 220px !important; line-height: 50px !important; font-weight: 400 !important; }
         .kb-wrap { display: none !important; }
         .app-header { padding: 10px 16px !important; gap: 12px !important; flex-wrap: wrap !important; }
         .nav-btn { font-size: 9px !important; padding: 4px 7px !important; }
@@ -385,7 +385,7 @@ export default function GlobalStyles() {
       /* ── Responsive: Mobile (< 768) ─────────────────────── */
       @media (max-width: 767px) {
         .typing-main { max-width: 100% !important; }
-        .typing-text { font-size: 14px !important; max-height: 180px !important; line-height: 1.65 !important; font-weight: 400 !important; }
+        .typing-text { font-size: 14px !important; max-height: 180px !important; line-height: 50px !important; font-weight: 400 !important; }
         .app-header { gap: 8px !important; padding: 8px 12px !important; }
         .nav-btn { font-size: 8px !important; padding: 3px 6px !important; }
         .app-logo { font-size: 13px !important; margin-right: 4px !important; }
